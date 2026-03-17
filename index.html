@@ -40,6 +40,12 @@ body{
   overflow-x:hidden;
 }
 a{text-decoration:none;color:inherit;}
+h1,h2,h3,p,summary,li,span{
+  word-break:normal;
+  overflow-wrap:normal;
+  hyphens:none;
+}
+h1,h2,h3,p{max-width:100%;}
 
 /* ─ CURSOR ─ */
 #cur{
@@ -150,8 +156,12 @@ nav{
 .hero-title{
   font-size:clamp(2.4rem,6.4vw,5.15rem);
   font-weight:900;line-height:1.03;letter-spacing:-.03em;
-  margin-bottom:22px;min-height:2.2em;
+  margin-bottom:22px;min-height:2.3em;
+  max-width:850px;
+  text-wrap:balance;
 }
+.hero-line{display:block;}
+.typed-wrap{display:inline-flex;align-items:flex-end;gap:.02em;flex-wrap:nowrap;}
 .typed-hero{
   color:#eefbec;
   display:inline-block;
@@ -164,6 +174,12 @@ nav{
     0 0 26px rgba(107,211,75,.42),
     0 0 58px rgba(107,211,75,.26);
 }
+.hero-punct{
+  display:inline-block;
+  color:#eefbec;
+  text-shadow:0 0 18px rgba(255,255,255,.06);
+  min-width:.22em;
+}
 .caret{
   display:inline-block;width:.08em;height:.9em;margin-left:.08em;vertical-align:-.08em;
   background:var(--green-soft);
@@ -174,7 +190,7 @@ nav{
 .hero-sub{
   font-size:clamp(.95rem,1.8vw,1.15rem);
   font-weight:300;line-height:1.75;color:var(--dim);
-  max-width:540px;margin-bottom:32px;
+  max-width:620px;margin-bottom:32px;
 }
 .hero-btns{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:48px;}
 .btn-p{
@@ -251,12 +267,27 @@ nav{
   text-shadow:0 0 18px rgba(107,211,75,.14);
 }
 .slabel::before{content:'';display:block;width:28px;height:1px;background:var(--green);}
-.stitle{font-size:clamp(1.7rem,3.8vw,2.8rem);font-weight:800;line-height:1.15;margin-bottom:14px;}
+.stitle{
+  font-size:clamp(1.7rem,3.8vw,2.8rem);
+  font-weight:800;
+  line-height:1.15;
+  margin-bottom:14px;
+  max-width:860px;
+  text-wrap:balance;
+}
+.stitle.center{margin-left:auto;margin-right:auto;}
 .stitle span{
   color:var(--green-bright);
   text-shadow:0 0 10px rgba(107,211,75,.45),0 0 22px rgba(107,211,75,.16);
 }
-.sdesc{font-size:.95rem;line-height:1.75;color:var(--dim);max-width:540px;font-weight:300;}
+.sdesc{
+  font-size:.95rem;
+  line-height:1.75;
+  color:var(--dim);
+  max-width:620px;
+  font-weight:300;
+}
+.sdesc.center{margin-left:auto;margin-right:auto;}
 
 /* ─ SOBRE ─ */
 .sobre-grid{display:grid;grid-template-columns:1fr 1fr;gap:70px;align-items:center;}
@@ -383,12 +414,12 @@ details p{margin:12px 0 4px;color:var(--dim);font-size:.88rem;line-height:1.7;}
   display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:28px;
   box-shadow:0 0 0 1px rgba(107,211,75,.03) inset;
 }
-.ctabox h2{font-size:clamp(1.4rem,2.8vw,2.2rem);font-weight:800;max-width:540px;line-height:1.2;}
+.ctabox h2{font-size:clamp(1.4rem,2.8vw,2.2rem);font-weight:800;max-width:620px;line-height:1.2;}
 .ctabox h2 span{
   color:var(--green-bright);
   text-shadow:0 0 10px rgba(107,211,75,.52),0 0 24px rgba(107,211,75,.18);
 }
-.ctabox p{color:var(--dim);margin-top:10px;font-size:.92rem;max-width:500px;}
+.ctabox p{color:var(--dim);margin-top:10px;font-size:.92rem;max-width:540px;}
 .cta-btns{display:flex;gap:12px;flex-wrap:wrap;flex-shrink:0;}
 
 /* ─ CONTATO ─ */
@@ -404,10 +435,6 @@ details p{margin:12px 0 4px;color:var(--dim);font-size:.88rem;line-height:1.7;}
 .ci-val{font-size:.88rem;font-weight:600;color:var(--text);}
 .ci-val a{color:var(--green-soft);transition:opacity .2s,text-shadow .2s;}
 .ci-val a:hover{opacity:.82;text-shadow:var(--glow-1);}
-.msg-box{
-  padding:20px;border-radius:10px;border:1px solid var(--border);background:rgba(6,18,8,.76);
-  font-size:.85rem;line-height:1.7;color:var(--dim);font-style:italic;margin-top:8px;
-}
 
 /* ─ FOOTER ─ */
 footer{
@@ -427,9 +454,11 @@ footer{
 }
 .flinks a:hover{color:var(--green-soft);text-shadow:var(--glow-1);}
 
-/* ─ SCROLL REVEAL LETTERS ─ */
-.reveal-chars{display:inline-block;}
-.reveal-chars .ch{
+/* ─ SCROLL REVEAL POR PALAVRAS ─ */
+.reveal-words{display:block;}
+.reveal-inline{display:inline;}
+.reveal-words .word,
+.reveal-inline .word{
   display:inline-block;
   opacity:0;
   transform:translateY(18px) scale(.98);
@@ -437,18 +466,17 @@ footer{
   transition:
     opacity .45s ease,
     transform .55s cubic-bezier(.2,.7,.15,1),
-    filter .55s ease,
-    color .25s ease,
-    text-shadow .25s ease;
-  transition-delay:calc(var(--i) * 22ms);
-  white-space:pre;
+    filter .55s ease;
+  transition-delay:calc(var(--i) * 35ms);
 }
-.reveal-chars.is-visible .ch{
+.reveal-words.is-visible .word,
+.reveal-inline.is-visible .word{
   opacity:1;
   transform:translateY(0) scale(1);
   filter:blur(0);
 }
-.reveal-chars.is-past .ch{
+.reveal-words.is-past .word,
+.reveal-inline.is-past .word{
   opacity:.16;
   transform:translateY(-14px);
   filter:blur(1px);
@@ -486,7 +514,8 @@ footer{
   .btn-p,.btn-g{width:100%;justify-content:center;text-align:center;}
   .ctabox{padding:28px 20px;}
   .cta-btns{width:100%;}
-  .hero-title{min-height:2.6em;}
+  .hero-title{min-height:2.8em;}
+  .stitle{text-wrap:pretty;}
 }
 @media(max-width:420px){
   .proc-grid{grid-template-columns:1fr;}
@@ -578,13 +607,20 @@ footer{
   </svg>
 
   <div class="wrap" style="width:100%;">
-    <div class="hero-badge reveal-chars">// Fortaleza – CE · Atuação em todo o Nordeste</div>
+    <div class="hero-badge reveal-words reveal-inline">// Fortaleza – CE · Atuação em todo o Nordeste</div>
 
     <h1 class="hero-title">
-      <span id="typedHero" class="typed-hero"></span><span class="caret"></span>
+      <span class="hero-line">Soluções em</span>
+      <span class="hero-line">
+        <span class="typed-wrap">
+          <span id="typedHero" class="typed-hero"></span>
+          <span id="typedPunct" class="hero-punct"></span>
+          <span class="caret"></span>
+        </span>
+      </span>
     </h1>
 
-    <p class="hero-sub reveal-chars">
+    <p class="hero-sub reveal-words">
       A AIOTI atende empresas que precisam integrar equipamentos, modernizar processos, coletar dados em nuvem e ganhar eficiência operacional com visão técnica e execução prática.
     </p>
 
@@ -615,10 +651,10 @@ footer{
   <div class="wrap">
     <div class="sobre-grid">
       <div class="sobre-text">
-        <div class="slabel reveal-chars">Sobre a AIOTI</div>
-        <h2 class="stitle reveal-chars">Estrutura ideal para a <span>indústria</span></h2>
-        <p class="sdesc reveal-chars">Sediada em Fortaleza – CE, a AIOTI Soluções Industriais atua em todo o Nordeste com foco em integração de equipamentos, modernização de processos e disponibilização de dados em nuvem.</p>
-        <p class="sdesc reveal-chars">Desde 2016, entregamos projetos com visão técnica e execução prática — com estrutura enxuta, suporte local e soluções customizadas para cada operação industrial.</p>
+        <div class="slabel reveal-words reveal-inline">Sobre a AIOTI</div>
+        <h2 class="stitle reveal-words">Estrutura ideal para a <span>indústria</span></h2>
+        <p class="sdesc reveal-words">Sediada em Fortaleza – CE, a AIOTI Soluções Industriais atua em todo o Nordeste com foco em integração de equipamentos, modernização de processos e disponibilização de dados em nuvem.</p>
+        <p class="sdesc reveal-words">Desde 2016, entregamos projetos com visão técnica e execução prática — com estrutura enxuta, suporte local e soluções customizadas para cada operação industrial.</p>
         <div class="pills">
           <span class="pill">Desde 2016</span>
           <span class="pill">Suporte Local</span>
@@ -629,20 +665,20 @@ footer{
       </div>
       <div class="mini-cards">
         <div class="mc">
-          <div class="mc-title reveal-chars">Desde 2016</div>
-          <div class="mc-desc reveal-chars">Atuação em integração de equipamentos, peças e dados industriais.</div>
+          <div class="mc-title reveal-words">Desde 2016</div>
+          <div class="mc-desc reveal-words">Atuação em integração de equipamentos, peças e dados industriais.</div>
         </div>
         <div class="mc">
-          <div class="mc-title reveal-chars">Suporte local</div>
-          <div class="mc-desc reveal-chars">Conhecimento das necessidades do mercado industrial do Nordeste.</div>
+          <div class="mc-title reveal-words">Suporte local</div>
+          <div class="mc-desc reveal-words">Conhecimento das necessidades do mercado industrial do Nordeste.</div>
         </div>
         <div class="mc">
-          <div class="mc-title reveal-chars">Resposta rápida</div>
-          <div class="mc-desc reveal-chars">Estrutura enxuta para soluções customizadas e execução ágil.</div>
+          <div class="mc-title reveal-words">Resposta rápida</div>
+          <div class="mc-desc reveal-words">Estrutura enxuta para soluções customizadas e execução ágil.</div>
         </div>
         <div class="mc">
-          <div class="mc-title reveal-chars">Foco em resultado</div>
-          <div class="mc-desc reveal-chars">Eficiência operacional, visibilidade e modernização tecnológica.</div>
+          <div class="mc-title reveal-words">Foco em resultado</div>
+          <div class="mc-desc reveal-words">Eficiência operacional, visibilidade e modernização tecnológica.</div>
         </div>
       </div>
     </div>
@@ -654,15 +690,15 @@ footer{
 <!-- ══ SERVIÇOS ══ -->
 <section class="sec" id="servicos" style="background:linear-gradient(180deg,transparent,rgba(20,56,18,.28),transparent);">
   <div class="wrap">
-    <div class="slabel reveal-chars">Serviços principais</div>
-    <h2 class="stitle reveal-chars">Soluções <span>Industriais</span></h2>
-    <p class="sdesc reveal-chars" style="margin-bottom:40px;">Estrutura Pensada para Comunicar Valor Tecnico Aos Clientes</p>
+    <div class="slabel reveal-words reveal-inline">Serviços principais</div>
+    <h2 class="stitle reveal-words">Soluções <span>Industriais</span></h2>
+    <p class="sdesc reveal-words" style="margin-bottom:40px;">Estrutura pensada para comunicar valor técnico aos clientes.</p>
 
     <div class="cards2" style="margin-bottom:20px;">
       <div class="card">
         <div class="card-num">01</div>
-        <div class="card-title reveal-chars">Engenharia e Projetos Industriais</div>
-        <p class="card-desc reveal-chars">Projetos elétricos, desenhos técnicos, documentação e consultoria especializada para implantação, adequação e melhoria operacional.</p>
+        <div class="card-title reveal-words">Engenharia e Projetos Industriais</div>
+        <p class="card-desc reveal-words">Projetos elétricos, desenhos técnicos, documentação e consultoria especializada para implantação, adequação e melhoria operacional.</p>
         <ul>
           <li>Projetos elétricos industriais</li>
           <li>Desenhos técnicos e documentação</li>
@@ -674,8 +710,8 @@ footer{
 
       <div class="card">
         <div class="card-num">02</div>
-        <div class="card-title reveal-chars">Automação e Indústria Inteligente (IoT)</div>
-        <p class="card-desc reveal-chars">Integração de sistemas, software industrial, conectividade entre equipamentos e inteligência para operação mais confiável.</p>
+        <div class="card-title reveal-words">Automação e Indústria Inteligente (IoT)</div>
+        <p class="card-desc reveal-words">Integração de sistemas, software industrial, conectividade entre equipamentos e inteligência para operação mais confiável.</p>
         <ul>
           <li>CLP, supervisório, banco de dados e APIs</li>
           <li>Software e dashboards industriais</li>
@@ -687,8 +723,8 @@ footer{
 
       <div class="card">
         <div class="card-num">03</div>
-        <div class="card-title reveal-chars">Monitoramento e Dados em Nuvem</div>
-        <p class="card-desc reveal-chars">Coleta, supervisão e análise de dados de produção, utilidades, consumo e desempenho com acesso remoto e histórico confiável.</p>
+        <div class="card-title reveal-words">Monitoramento e Dados em Nuvem</div>
+        <p class="card-desc reveal-words">Coleta, supervisão e análise de dados de produção, utilidades, consumo e desempenho com acesso remoto e histórico confiável.</p>
         <ul>
           <li>Monitoramento remoto</li>
           <li>Alarmes, históricos e rastreabilidade</li>
@@ -700,8 +736,8 @@ footer{
 
       <div class="card">
         <div class="card-num">04</div>
-        <div class="card-title reveal-chars">Retrofit e Modernização de Máquinas</div>
-        <p class="card-desc reveal-chars">Atualização tecnológica de equipamentos para aumentar eficiência, disponibilidade, segurança e vida útil dos ativos industriais.</p>
+        <div class="card-title reveal-words">Retrofit e Modernização de Máquinas</div>
+        <p class="card-desc reveal-words">Atualização tecnológica de equipamentos para aumentar eficiência, disponibilidade, segurança e vida útil dos ativos industriais.</p>
         <ul>
           <li>Modernização de painéis e comandos</li>
           <li>Substituição de itens obsoletos</li>
@@ -719,33 +755,33 @@ footer{
 <!-- ══ DIFERENCIAIS ══ -->
 <section class="sec" id="diferenciais">
   <div class="wrap">
-    <div class="slabel reveal-chars">Por que a AIOTI</div>
-    <h2 class="stitle reveal-chars" style="margin-bottom:12px;">Por que a AIOTI gera <span>confiança</span> no mercado industrial</h2>
-    <p class="sdesc reveal-chars" style="margin-bottom:36px;">Expertise em integração de equipamentos, suporte local, agilidade e foco em crescimento sustentável.</p>
+    <div class="slabel reveal-words reveal-inline">Diferenciais</div>
+    <h2 class="stitle reveal-words">Tecnologia, proximidade e <span>resultado</span></h2>
+    <p class="sdesc reveal-words" style="margin-bottom:36px;">Atuação técnica, suporte local, agilidade de resposta e soluções personalizadas para cada operação.</p>
 
     <div class="dif-grid" style="margin-bottom:40px;">
-      <div class="dif"><div class="dif-val glow-green">2016</div><div class="dif-label">Fundação</div><div class="dif-desc reveal-chars">Consolidação regional.</div></div>
-      <div class="dif"><div class="dif-val glow-green">NE</div><div class="dif-label">Nordeste</div><div class="dif-desc reveal-chars">Realidade industrial local.</div></div>
-      <div class="dif"><div class="dif-val glow-green">CRM</div><div class="dif-label">+ ERP</div><div class="dif-desc reveal-chars">Gestão comercial assertiva.</div></div>
-      <div class="dif"><div class="dif-val glow-green">100%</div><div class="dif-label">Customização</div><div class="dif-desc reveal-chars">Soluções adaptadas ao processo.</div></div>
+      <div class="dif"><div class="dif-val glow-green">2016</div><div class="dif-label">Fundação</div><div class="dif-desc reveal-words">Consolidação regional.</div></div>
+      <div class="dif"><div class="dif-val glow-green">NE</div><div class="dif-label">Nordeste</div><div class="dif-desc reveal-words">Atuação próxima do cliente.</div></div>
+      <div class="dif"><div class="dif-val glow-green">CRM</div><div class="dif-label">+ ERP</div><div class="dif-desc reveal-words">Gestão comercial assertiva.</div></div>
+      <div class="dif"><div class="dif-val glow-green">100%</div><div class="dif-label">Customização</div><div class="dif-desc reveal-words">Soluções adaptadas ao processo.</div></div>
     </div>
 
     <div class="cards2">
       <div class="card">
-        <div class="card-title reveal-chars">Expertise técnica</div>
-        <p class="card-desc reveal-chars">Integração de equipamentos, dados industriais, projetos e soluções voltadas à operação real.</p>
+        <div class="card-title reveal-words">Expertise técnica</div>
+        <p class="card-desc reveal-words">Integração de equipamentos, dados industriais, projetos e soluções voltadas à operação real.</p>
       </div>
       <div class="card">
-        <div class="card-title reveal-chars">Agilidade local</div>
-        <p class="card-desc reveal-chars">Conhecimento do mercado regional com suporte próximo, adaptação rápida e resposta mais curta.</p>
+        <div class="card-title reveal-words">Agilidade local</div>
+        <p class="card-desc reveal-words">Conhecimento do mercado regional com suporte próximo, adaptação rápida e resposta mais curta.</p>
       </div>
       <div class="card">
-        <div class="card-title reveal-chars">Digitalização industrial</div>
-        <p class="card-desc reveal-chars">Disponibilização de dados, supervisão em nuvem e software para tomada de decisão.</p>
+        <div class="card-title reveal-words">Digitalização industrial</div>
+        <p class="card-desc reveal-words">Disponibilização de dados, supervisão em nuvem e software para tomada de decisão.</p>
       </div>
       <div class="card">
-        <div class="card-title reveal-chars">Crescimento sustentável</div>
-        <p class="card-desc reveal-chars">Estrutura orientada a reinvestimento, capacitação e evolução contínua das soluções entregues.</p>
+        <div class="card-title reveal-words">Crescimento sustentável</div>
+        <p class="card-desc reveal-words">Estrutura orientada a reinvestimento, capacitação e evolução contínua das soluções entregues.</p>
       </div>
     </div>
   </div>
@@ -756,21 +792,21 @@ footer{
 <!-- ══ SEGMENTOS ══ -->
 <section class="sec" id="segmentos">
   <div class="wrap">
-    <div class="slabel reveal-chars">Onde atuamos</div>
-    <h2 class="stitle reveal-chars" style="margin-bottom:12px;">Segmentos onde a AIOTI <span>agrega valor</span></h2>
-    <p class="sdesc reveal-chars" style="margin-bottom:36px;">Indústrias de processo, utilidades, energia, infraestrutura e modernização de ativos.</p>
+    <div class="slabel reveal-words reveal-inline">Onde atuamos</div>
+    <h2 class="stitle reveal-words">Setores em que a AIOTI <span>atua</span></h2>
+    <p class="sdesc reveal-words" style="margin-bottom:36px;">Indústrias de processo, utilidades, energia, infraestrutura e modernização de ativos.</p>
     <div class="seg-grid">
       <div class="card">
-        <div class="card-title reveal-chars">Indústrias de processo</div>
-        <p class="card-desc reveal-chars">Automação, instrumentação, integração e dados de operação para linhas produtivas e utilidades.</p>
+        <div class="card-title reveal-words">Indústrias de processo</div>
+        <p class="card-desc reveal-words">Automação, instrumentação, integração e dados de operação para linhas produtivas e utilidades.</p>
       </div>
       <div class="card">
-        <div class="card-title reveal-chars">Energia e infraestrutura</div>
-        <p class="card-desc reveal-chars">Monitoramento, telemetria, retrofit, conectividade e inteligência operacional para ativos energéticos.</p>
+        <div class="card-title reveal-words">Energia e infraestrutura</div>
+        <p class="card-desc reveal-words">Monitoramento, telemetria, retrofit, conectividade e inteligência operacional para ativos energéticos.</p>
       </div>
       <div class="card">
-        <div class="card-title reveal-chars">Máquinas e equipamentos</div>
-        <p class="card-desc reveal-chars">Modernização, adequação tecnológica, supervisão e aumento de eficiência de equipamentos industriais.</p>
+        <div class="card-title reveal-words">Máquinas e equipamentos</div>
+        <p class="card-desc reveal-words">Modernização, adequação tecnológica, supervisão e aumento de eficiência de equipamentos industriais.</p>
       </div>
     </div>
   </div>
@@ -782,8 +818,8 @@ footer{
 <section class="sec" id="parceiros">
   <div class="wrap">
     <div style="text-align:center;margin-bottom:40px;">
-      <div class="slabel reveal-chars" style="justify-content:center;">Representações e parceiros tecnológicos</div>
-      <h2 class="stitle reveal-chars" style="text-align:center;">Marcas que reforçam nosso <span>posicionamento técnico</span></h2>
+      <div class="slabel reveal-words reveal-inline" style="justify-content:center;">Representações e parceiros tecnológicos</div>
+      <h2 class="stitle center reveal-words" style="text-align:center;">Parceiros e marcas com <span>confiança técnica</span></h2>
     </div>
     <div class="pills-lg" style="margin-bottom:60px;">
       <span class="pill-lg">Siemens</span>
@@ -798,8 +834,8 @@ footer{
     </div>
 
     <div style="text-align:center;margin-bottom:32px;">
-      <div class="slabel reveal-chars" style="justify-content:center;">Referências de mercado</div>
-      <h2 class="stitle reveal-chars" style="text-align:center;font-size:clamp(1.3rem,2.8vw,2rem);">Empresas que <span>confiam</span> na AIOTI</h2>
+      <div class="slabel reveal-words reveal-inline" style="justify-content:center;">Referências de mercado</div>
+      <h2 class="stitle center reveal-words" style="text-align:center;font-size:clamp(1.3rem,2.8vw,2rem);">Empresas que <span>confiam</span> na AIOTI</h2>
     </div>
 
     <div class="pills-lg">
@@ -828,31 +864,31 @@ footer{
 <section class="sec" id="processo">
   <div class="wrap">
     <div style="text-align:center;margin-bottom:48px;">
-      <div class="slabel reveal-chars" style="justify-content:center;">Como trabalhamos</div>
-      <h2 class="stitle reveal-chars" style="text-align:center;">Como conduzimos um <span>projeto industrial</span></h2>
-      <p class="sdesc reveal-chars" style="max-width:500px;margin:0 auto;">Fluxo simples para transformar interesse comercial em solução implantada.</p>
+      <div class="slabel reveal-words reveal-inline" style="justify-content:center;">Como trabalhamos</div>
+      <h2 class="stitle center reveal-words" style="text-align:center;">Nosso <span>processo</span></h2>
+      <p class="sdesc center reveal-words" style="max-width:560px;">Da análise à implantação, com acompanhamento técnico em cada etapa.</p>
     </div>
 
     <div class="proc-grid">
       <div class="proc">
         <div class="proc-n">01</div>
-        <h3 class="reveal-chars">Diagnóstico</h3>
-        <p class="reveal-chars">Levantamento da operação, necessidades, infraestrutura existente e objetivos do cliente.</p>
+        <h3 class="reveal-words">Diagnóstico</h3>
+        <p class="reveal-words">Levantamento da operação, necessidades, infraestrutura existente e objetivos do cliente.</p>
       </div>
       <div class="proc">
         <div class="proc-n">02</div>
-        <h3 class="reveal-chars">Proposta Técnica</h3>
-        <p class="reveal-chars">Definição da solução ideal com escopo, viabilidade e ganhos operacionais esperados.</p>
+        <h3 class="reveal-words">Proposta Técnica</h3>
+        <p class="reveal-words">Definição da solução ideal com escopo, viabilidade e ganhos operacionais esperados.</p>
       </div>
       <div class="proc">
         <div class="proc-n">03</div>
-        <h3 class="reveal-chars">Implantação</h3>
-        <p class="reveal-chars">Execução técnica com integração, software, documentação, testes e validação em campo.</p>
+        <h3 class="reveal-words">Implantação</h3>
+        <p class="reveal-words">Execução técnica com integração, software, documentação, testes e validação em campo.</p>
       </div>
       <div class="proc">
         <div class="proc-n">04</div>
-        <h3 class="reveal-chars">Suporte e Evolução</h3>
-        <p class="reveal-chars">Acompanhamento, expansão, ajustes e melhoria contínua baseada em dados reais.</p>
+        <h3 class="reveal-words">Suporte e Evolução</h3>
+        <p class="reveal-words">Acompanhamento, expansão, ajustes e melhoria contínua baseada em dados reais.</p>
       </div>
     </div>
   </div>
@@ -865,8 +901,8 @@ footer{
   <div class="wrap">
     <div class="ctabox">
       <div>
-        <h2 class="reveal-chars">Sua operação precisa de mais <span>eficiência, controle e dados?</span></h2>
-        <p class="reveal-chars">Fale com a AIOTI para projetos de automação, integração industrial, monitoramento em nuvem, energia e retrofit.</p>
+        <h2 class="reveal-words">Sua operação precisa de mais <span>eficiência, controle e dados?</span></h2>
+        <p class="reveal-words">Fale com a AIOTI para projetos de automação, integração industrial, monitoramento em nuvem, energia e retrofit.</p>
       </div>
       <div class="cta-btns">
         <a href="https://wa.me/5585991931240?text=Olá%2C%20gostaria%20de%20pedir%20atendimento." target="_blank" class="btn-p">Pedir Atendimento</a>
@@ -881,26 +917,26 @@ footer{
 <!-- ══ FAQ ══ -->
 <section class="sec" id="faq">
   <div class="wrap">
-    <div class="slabel reveal-chars">Dúvidas frequentes</div>
-    <h2 class="stitle reveal-chars" style="margin-bottom:8px;">Perguntas <span>frequentes</span></h2>
-    <p class="sdesc reveal-chars" style="margin-bottom:0;">Quebrando objeções comerciais para aumentar conversão.</p>
+    <div class="slabel reveal-words reveal-inline">Dúvidas frequentes</div>
+    <h2 class="stitle reveal-words" style="margin-bottom:8px;">Perguntas <span>frequentes</span></h2>
+    <p class="sdesc reveal-words" style="margin-bottom:0;">Dúvidas comuns sobre atendimento, implantação e suporte.</p>
 
     <div class="faq-wrap">
       <details open>
-        <summary class="reveal-chars">Vocês atendem somente Fortaleza?</summary>
-        <p class="reveal-chars">Não. A AIOTI é sediada em Fortaleza – CE, mas atua na região Nordeste do Brasil com foco em serviços industriais.</p>
+        <summary class="reveal-words">Vocês atendem somente Fortaleza?</summary>
+        <p class="reveal-words">Não. A AIOTI é sediada em Fortaleza – CE, mas atua na região Nordeste do Brasil com foco em serviços industriais.</p>
       </details>
       <details>
-        <summary class="reveal-chars">Que tipo de empresa pode contratar a AIOTI?</summary>
-        <p class="reveal-chars">Indústrias, empresas de energia, utilidades, infraestrutura, máquinas e operações que precisam integrar sistemas, coletar dados e modernizar processos.</p>
+        <summary class="reveal-words">Que tipo de empresa pode contratar a AIOTI?</summary>
+        <p class="reveal-words">Indústrias, empresas de energia, utilidades, infraestrutura, máquinas e operações que precisam integrar sistemas, coletar dados e modernizar processos.</p>
       </details>
       <details>
-        <summary class="reveal-chars">Vocês atuam em projeto e também em implantação?</summary>
-        <p class="reveal-chars">Sim. Nossa atuação contempla diagnóstico, proposta, execução, integração, retrofit, suporte e evolução contínua das soluções.</p>
+        <summary class="reveal-words">Vocês atuam em projeto e também em implantação?</summary>
+        <p class="reveal-words">Sim. Nossa atuação contempla diagnóstico, proposta, execução, integração, retrofit, suporte e evolução contínua das soluções.</p>
       </details>
       <details>
-        <summary class="reveal-chars">É possível modernizar equipamentos antigos?</summary>
-        <p class="reveal-chars">Sim. Retrofit e modernização são parte central da nossa proposta para elevar eficiência, confiabilidade e vida útil dos ativos industriais.</p>
+        <summary class="reveal-words">É possível modernizar equipamentos antigos?</summary>
+        <p class="reveal-words">Sim. Retrofit e modernização são parte central da nossa proposta para elevar eficiência, confiabilidade e vida útil dos ativos industriais.</p>
       </details>
     </div>
   </div>
@@ -911,33 +947,33 @@ footer{
 <!-- ══ CONTATO ══ -->
 <section class="sec" id="contato">
   <div class="wrap">
-    <div class="slabel reveal-chars">Fale com a AIOTI</div>
-    <h2 class="stitle reveal-chars" style="margin-bottom:8px;">Vamos falar sobre sua <span>necessidade industrial</span></h2>
-    <p class="sdesc reveal-chars" style="margin-bottom:36px;">Contato direto para acelerar proposta e atendimento comercial.</p>
+    <div class="slabel reveal-words reveal-inline">Fale com a AIOTI</div>
+    <h2 class="stitle reveal-words" style="margin-bottom:8px;">Vamos falar sobre sua <span>necessidade industrial</span></h2>
+    <p class="sdesc reveal-words" style="margin-bottom:36px;">Entre em contato para acelerar sua proposta e atendimento comercial.</p>
 
     <div class="contact-grid">
       <div style="display:flex;flex-direction:column;gap:20px;">
         <div class="ci">
           <div class="ci-icon">WA</div>
           <div>
-            <div class="ci-label reveal-chars">WhatsApp</div>
-            <div class="ci-val reveal-chars"><a href="https://wa.me/5585991931240" target="_blank">+55 85 99193-1240</a></div>
+            <div class="ci-label reveal-words">WhatsApp</div>
+            <div class="ci-val reveal-words"><a href="https://wa.me/5585991931240" target="_blank">+55 85 99193-1240</a></div>
           </div>
         </div>
 
         <div class="ci">
           <div class="ci-icon">WEB</div>
           <div>
-            <div class="ci-label reveal-chars">Site</div>
-            <div class="ci-val reveal-chars"><a href="https://aiotisolucoes.com.br" target="_blank">aiotisolucoes.com.br</a></div>
+            <div class="ci-label reveal-words">Site</div>
+            <div class="ci-val reveal-words"><a href="https://aiotisolucoes.com.br" target="_blank">aiotisolucoes.com.br</a></div>
           </div>
         </div>
 
         <div class="ci">
           <div class="ci-icon">LOC</div>
           <div>
-            <div class="ci-label reveal-chars">Localização</div>
-            <div class="ci-val reveal-chars">Fortaleza – CE · Nordeste</div>
+            <div class="ci-label reveal-words">Localização</div>
+            <div class="ci-val reveal-words">Fortaleza – CE · Nordeste</div>
           </div>
         </div>
 
@@ -1099,12 +1135,13 @@ nl.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{
 // Footer year
 document.getElementById('yr').textContent=new Date().getFullYear();
 
-// HERO typing effect
+// HERO typing effect sem puxar pontuação
 const typedHero=document.getElementById('typedHero');
+const typedPunct=document.getElementById('typedPunct');
 const heroPhrases=[
-  {text:'Engenharia,', final:false},
-  {text:'automação,', final:false},
-  {text:'e dados industriais.', final:true}
+  {text:'Engenharia', punct:'', final:false},
+  {text:'automação', punct:'', final:false},
+  {text:'dados industriais', punct:'', final:true}
 ];
 
 let phraseIndex=0;
@@ -1116,12 +1153,14 @@ function typeHero(){
   const full=current.text;
 
   typedHero.classList.toggle('is-final', current.final);
+  typedPunct.textContent = (!deleting && charIndex >= full.length) ? current.punct : '';
 
   if(!deleting){
     typedHero.textContent=full.slice(0,charIndex+1);
     charIndex++;
 
     if(charIndex===full.length){
+      typedPunct.textContent=current.punct;
       if(current.final){
         setTimeout(()=>{
           deleting=true;
@@ -1138,6 +1177,7 @@ function typeHero(){
     }
     setTimeout(typeHero, current.final ? 78 : 92);
   }else{
+    typedPunct.textContent='';
     typedHero.textContent=full.slice(0,charIndex-1);
     charIndex--;
 
@@ -1150,8 +1190,8 @@ function typeHero(){
 }
 typeHero();
 
-// Wrap letters for reveal
-function wrapRevealText(el){
+// Wrap reveal por palavras
+function wrapRevealWords(el){
   if(!el || el.dataset.wrapped==='1') return;
   const original=el.textContent;
   if(!original.trim()) return;
@@ -1159,20 +1199,27 @@ function wrapRevealText(el){
   el.dataset.wrapped='1';
   el.setAttribute('aria-label', original);
 
+  const parts = original.split(/(\s+)/);
   const frag=document.createDocumentFragment();
-  [...original].forEach((char, i)=>{
-    const span=document.createElement('span');
-    span.className='ch';
-    span.style.setProperty('--i', i);
-    span.textContent=char === ' ' ? '\u00A0' : char;
-    frag.appendChild(span);
+  let idx=0;
+
+  parts.forEach(part=>{
+    if(/\s+/.test(part)){
+      frag.appendChild(document.createTextNode(part));
+    }else if(part){
+      const span=document.createElement('span');
+      span.className='word';
+      span.style.setProperty('--i', idx++);
+      span.textContent=part;
+      frag.appendChild(span);
+    }
   });
 
   el.textContent='';
   el.appendChild(frag);
 }
 
-document.querySelectorAll('.reveal-chars').forEach(wrapRevealText);
+document.querySelectorAll('.reveal-words, .reveal-inline').forEach(wrapRevealWords);
 
 // Reveal observer
 const revealObserver=new IntersectionObserver((entries)=>{
@@ -1193,7 +1240,7 @@ const revealObserver=new IntersectionObserver((entries)=>{
   });
 },{threshold:.18, rootMargin:'0px 0px -8% 0px'});
 
-document.querySelectorAll('.reveal-chars').forEach(el=>revealObserver.observe(el));
+document.querySelectorAll('.reveal-words, .reveal-inline').forEach(el=>revealObserver.observe(el));
 
 // Fade sections when passing
 const sections=[...document.querySelectorAll('.sec')];
